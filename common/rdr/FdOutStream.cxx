@@ -198,7 +198,7 @@ size_t FdOutStream::writeWithTimeout(const void* data, size_t length, int timeou
     // select only guarantees that you can write SO_SNDLOWAT without
     // blocking, which is normally 1. Use MSG_DONTWAIT to avoid
     // blocking, when possible.
-#ifndef MSG_DONTWAIT
+#if ! defined(MSG_DONTWAIT) || defined (__APPLE__)
     n = ::send(fd, (const char*)data, length, 0);
 #else
     n = ::send(fd, (const char*)data, length, MSG_DONTWAIT);
